@@ -1,4 +1,4 @@
-<img src="recipe/.png" height="100">
+<img src="recipe/tauari.png" height="100">
 
 __Leonardo de Oliveira Martins<sup>1</sup>__
 <br>
@@ -6,13 +6,13 @@ __Leonardo de Oliveira Martins<sup>1</sup>__
 
 ## Introduction
 
-mussum dorma
+Python bindings for biomcmc-lib 
 
 ## License 
 SPDX-License-Identifier: GPL-3.0-or-later
 
 Copyright (C) 2020-today  [Leonardo de Oliveira Martins](https://github.com/leomrtns)
 
-This is free software; you can redistribute it and/or modify it under the terms of the GNU General Public
+Tauari is free software; you can redistribute it and/or modify it under the terms of the GNU General Public
 License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later
 version (http://www.gnu.org/copyleft/gpl.html).
