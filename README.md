@@ -1,4 +1,4 @@
-<img src="recipe/tauari.png" height="100">
+<img src="recipe/tauari.png" height="150">
 
 __Leonardo de Oliveira Martins<sup>1</sup>__
 <br>
