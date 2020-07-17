@@ -17,35 +17,34 @@ base_dir = Path(__file__).parent.resolve()
 version_file = base_dir / "tauari/__version__.py"
 readme_file = base_dir / "README.md"
 #csrc_path = os.path.relpath(os.path.join(os.path.dirname(__file__), "src"))
-csrc_path = base_dir / "src"
-biomc_path = base_dir/ "build"
-autoconf_path = base_dir / "submodules/biomcmc-lib/configure"
+src_path = base_dir / "src"
+build_path = base_dir/ "build"
 
 # Eval the version file to get __version__; avoids importing our own package
 with version_file.open() as f: exec(f.read())
 with readme_file.open(encoding = "utf-8") as f: long_description = f.read()
 
 module_c = setuptools.Extension('_tauari_c',
-  include_dirs = [f"{biomc_path}/include"],
-  library_dirs = [f"{biomc_path}/lib"],
-  runtime_library_dirs = [f"{biomc_path}/lib"],
+  include_dirs = [f"{build_path}/include"],
+  library_dirs = [f"{build_path}/lib"],
+  runtime_library_dirs = [f"{build_path}/lib"],
   libraries = ['biomcmc'],
-  sources = [f"{csrc_path}/somefile.c"])
+  sources = [f"{src_path}/somefile.c"])
 
+def biomc2_compilation (debug = ""):
+    autoconf_path = base_dir / "submodules/biomcmc-lib/configure"
+    subprocess.check_call(f"cd {build_path} && {autoconf_path} --prefix={build_path} {debug}".split())
+    subprocess.check_call(f"cd {build_path} && make".split())
+    subprocess.check_call(f"cd {build_path} && make install".split())
 class PreDevelopCompile(develop):
     """pre-compilation for development mode"""
     def run(self):
-        subprocess.check_call(f"{autoconf_path} --prefix={biomc_path} --enable-debug".split())
-        subprocess.check_call(f"make".split())
-        subprocess.check_call(f"make install".split())
+        biomc2_compilation("--enable-debug")
         develop.run(self) # run() after check_call means pre-install
-
 class PreInstallCompile(install):
     """Pre-compilation for installation mode"""
     def run(self):
-        subprocess.check_call(f"{autoconf_path} --prefix={biomc_path}".split())
-        subprocess.check_call(f"make".split())
-        subprocess.check_call(f"make install".split())
+        biomc2_compilation()
         install.run(self)
 
 setuptools.setup(
