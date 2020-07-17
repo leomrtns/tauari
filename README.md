@@ -8,6 +8,13 @@ __Leonardo de Oliveira Martins<sup>1</sup>__
 
 Python bindings for biomcmc-lib 
 
+## Installation
+
+Make sure you clone this repository recursively
+```
+git clone --recursive  https://github.com/leomrtns/tauari.git
+```
+
 ## License 
 SPDX-License-Identifier: GPL-3.0-or-later
 
