@@ -16,9 +16,10 @@ Make sure you have an up-to-date pip installed.
 base_dir = Path(__file__).parent.resolve()
 version_file = base_dir / "tauari/__version__.py"
 readme_file = base_dir / "README.md"
-csrc_path = os.path.relpath(os.path.join(os.path.dirname(__file__), "src"))
-biomc_path = os.path.relpath(os.path.join(os.path.dirname(__file__), "build"))
-autoconf_path = os.path.relpath(os.path.join(os.path.dirname(__file__), "submodules/biomcmc-lib/configure"))
+#csrc_path = os.path.relpath(os.path.join(os.path.dirname(__file__), "src"))
+csrc_path = base_dir / "src"
+biomc_path = base_dir/ "build"
+autoconf_path = base_dir / "submodules/biomcmc-lib/configure"
 
 # Eval the version file to get __version__; avoids importing our own package
 with version_file.open() as f: exec(f.read())
