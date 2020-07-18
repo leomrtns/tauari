@@ -37,8 +37,7 @@ pip install -e . # installs in development mode (modifications to python files a
 ### Dependencies
 
 * development package with the API python/C library, which is installed with your python conda installation or as `python-dev` from linux. 
-In any case `setuptools` will check and install from `pip` if missing. 
-* `autotools`, for installing the lowlevel `biomcmc-lib`. 
+* `automake`, the `check` unit test framework, and `zlib` are required for installing the lowlevel `biomcmc-lib`.
 * python > 3.6 and a C compiler, e.g. `gcc`
 
 The lowlevel phylogentic library [biomcmc-lib](https://github.com/quadram-institute-bioscience/biomcmc-lib)

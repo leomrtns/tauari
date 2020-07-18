@@ -5,9 +5,12 @@ channels:
   - defaults
 dependencies:
   - pip
+  - python>=3.6 # includes python-dev
   - biopython>1.68
   - automake
   - make
+  - zlib
+  - automake
+  - check
   - pip:
     - .  # this means run pip on this directory's setup.py 
-    - python-dev # C library

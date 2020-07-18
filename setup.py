@@ -1,6 +1,7 @@
 import pathlib, setuptools, sys, os
-from setuptools.command.develop import develop
-from setuptools.command.install import install
+import setuptools.command.develop
+import setuptools.command.install
+import setuptools.command.egg_info
 import subprocess
 
 min_version = (3, 6)
@@ -43,17 +44,23 @@ def biomc2_compilation (debug = ""):
     autoconf_path = f"{biomcmc_path}/configure"
     subprocess.call(f"{autoconf_path} --prefix={build_path} {debug}".split(), cwd=build_path) 
     subprocess.call(f"make install".split(), cwd=build_path) # biomcmc is installed locally, both prefix and `make  install` are useless
+    print (" 2 :", os.listdir(build_path))
 
-class PrePostDevelopCompile(develop):
+class PrePostDevelopCompile(setuptools.command.develop.develop):
     """pre- and post-compilation for development mode (only pre- currently)"""
     def run(self):
         biomc2_compilation("--enable-debug")
-        develop.run(self) # run() after check_call means pre-install
-class PrePostInstallCompile(install):
+        setuptools.command.develop.develop.run(self) # run() after chec k_call means pre-install
+class PrePostInstallCompile(setuptools.command.install.install):
     """Pre- and post-compilation for installation mode (only pre- currently)"""
     def run(self):
         biomc2_compilation()
-        install.run(self)
+        setuptools.command.install.install.run(self)
+class PrePostEggInfoCompile(setuptools.command.egg_info.egg_info):
+    """Pre- and post-compilation for installation mode (only pre- currently)"""
+    def run(self):
+        biomc2_compilation()
+        setuptools.command.egg_info.egg_info.run(self)
 
 setuptools.setup(
     name = "tauari",
@@ -70,12 +77,11 @@ setuptools.setup(
     },
     packages = setuptools.find_packages(),
     include_package_data=True,
-    package_data = {'tauari': ["build/lib/libbiomcmc*", "build/include/*", "build/include/biomcmc/*"]}, # relative paths to setup.py only 
+    package_data = {'tauari': ["build/lib","build/lib/libbiomcmc*", "build/include/*", "build/include/biomcmc/*"]}, # relative paths to setup.py only 
     data_files = [("", ["LICENSE"])],
     python_requires = '>={}'.format('.'.join(str(n) for n in min_version)),
     license='GPLv3+',
     install_requires=[
-        'python-dev',
         'biopython >= 1.68'
        ],
     classifiers = [
@@ -90,8 +96,9 @@ setuptools.setup(
     # Install a "tauari" program which calls tauari.__main__.main()
     #entry_points = { "console_scripts": ["tauari = tauari.tauari:main"]},
     cmdclass={
-        'develop': PrePostDevelopCompile,
-        'install': PrePostInstallCompile,
+        'develop':  PrePostDevelopCompile,
+        'install':  PrePostInstallCompile,
+        'egg_info':  PrePostEggInfoCompile,
     },
     ext_modules = [module_c]
 )
