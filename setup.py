@@ -77,7 +77,8 @@ setuptools.setup(
     },
     packages = setuptools.find_packages(),
     include_package_data=True,
-    package_data = {'tauari': ["build/lib","build/lib/libbiomcmc*", "build/include/*", "build/include/biomcmc/*"]}, # relative paths to setup.py only 
+#    package_dir = {'tauari':"build/lib"},
+    package_data = {'tauari': ["build/lib/libbiomcmc.so*"]}, # , "build/include/*", "build/include/biomcmc/*"]}, # relative paths to setup.py only 
     data_files = [("", ["LICENSE"])],
     python_requires = '>={}'.format('.'.join(str(n) for n in min_version)),
     license='GPLv3+',

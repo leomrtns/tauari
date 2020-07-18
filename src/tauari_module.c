@@ -16,14 +16,21 @@ tauari_testfunction (PyObject *self, PyObject *args)
   str1 = PyBytes_AsString(PyUnicode_AsUTF8String(arg1));
   str2 = PyBytes_AsString(PyUnicode_AsUTF8String(arg2));
 
-  printf ("I got [%s] and [%s] \n", str1, str2); // DEBUG
-  //if (error) { PyErr_SetString(TauariError, "gene and species trees can't be compared"); return NULL; }
-
   biomcmc_random_number_init (0ULL);
+  printf ("I got [%s] and [%s] \n rng = %d", str1, str2, biomcmc_rng_get_algorithm()); // DEBUG
+  //if (error) { PyErr_SetString(TauariError, "gene and species trees can't be compared"); return NULL; }
+  biomcmc_rng_set_algorithm (9);
   res_tuple = PyTuple_New(n_res);
   for (i = 0; i < n_res; i++) PyTuple_SetItem(res_tuple, i, PyLong_FromUnsignedLongLong ( biomcmc_rng_get() ));
 
   return res_tuple;
+}
+
+static PyObject *
+tauari_test2 (PyObject *self, PyObject *args)
+{
+  printf ("and now rng = %d", biomcmc_rng_get_algorithm()); // DEBUG
+  return ;
 }
 
 PyMODINIT_FUNC
@@ -33,6 +40,7 @@ PyInit__tauari_c (void) /* it has to be named PyInit_<module name in python> */
   static PyMethodDef TauariMethods[] = {
      {"testfunction", (PyCFunction) tauari_testfunction, METH_VARARGS, 
       "receives two strings, returns magic numbers."},
+     {"test2", (PyCFunction) tauari_test2, METH_VARARGS, "check global"},
      {NULL, NULL, 0, NULL}        /* Sentinel */
   };
   PyDoc_STRVAR(tauari__doc__,"lowlevel functions in C for treesignal module");
