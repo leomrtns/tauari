@@ -1,5 +1,4 @@
-from pathlib import Path
-import setuptools, sys
+import pathlib, setuptools, sysi, os
 from setuptools.command.develop import develop
 from setuptools.command.install import install
 import subprocess
@@ -13,26 +12,36 @@ Python {0} or above is required.
 Make sure you have an up-to-date pip installed.  
 """.format('.'.join(str(n) for n in min_version)), sys.exit(error)
 
-base_dir = Path(__file__).parent.resolve()
-version_file = base_dir / "tauari/__version__.py"
-readme_file = base_dir / "README.md"
-#csrc_path = os.path.relpath(os.path.join(os.path.dirname(__file__), "src"))
-src_path = base_dir / "src"
-build_path = base_dir/ "build"
+base_dir = pathlib.Path(__file__).parent.resolve()
+version_file = f"{base_dir}/tauari/__version__.py"
+readme_file  = f"{base_dir}/README.md"
+build_path   = f"{base_dir}/build"
+biomcmc_path = f"{build_path}/biomcmc-lib"
+include_path = f"{build_path}/include"
+library_path = f"{build_path}/lib"
+source_files = ["tauari_module.c"]
+source_files = [f"{base_dir}/src/{x}" for x in source_files]
 
 # Eval the version file to get __version__; avoids importing our own package
 with version_file.open() as f: exec(f.read())
 with readme_file.open(encoding = "utf-8") as f: long_description = f.read()
 
 module_c = setuptools.Extension('_tauari_c',
-  include_dirs = [f"{build_path}/include"],
-  library_dirs = [f"{build_path}/lib"],
-  runtime_library_dirs = [f"{build_path}/lib"],
+  include_dirs = [include_path],
+  library_dirs = [library_path],
+  runtime_library_dirs = [library_path],
   libraries = ['biomcmc'],
-  sources = [f"{src_path}/somefile.c"])
+  sources = source_files)
+
+if not os.path.exists(biomcmc_path): # developers can have their own links (without submodule)
+    source = f"{base_dir}/submodules/biomcmc-lib/"
+    if not os.path.exists(source):
+        sys.exit(f"Tauari:: No '{source}' found;\n You must download this repository with 'git clone --recursive' or add biomcmc-lib by hand to {biomcmc_path}")
+    print (f"Tauari:: Creating a link '{biomcmc_path}' pointing to '{source}'")
+    os.symlink(source, biomcmc_path)
 
 def biomc2_compilation (debug = ""):
-    autoconf_path = base_dir / "submodules/biomcmc-lib/configure"
+    autoconf_path = f"{biomcmc_path}/configure"
     subprocess.check_call(f"cd {build_path} && {autoconf_path} --prefix={build_path} {debug}".split())
     subprocess.check_call(f"cd {build_path} && make".split())
     subprocess.check_call(f"cd {build_path} && make install".split())
@@ -62,12 +71,13 @@ setuptools.setup(
     },
     packages = setuptools.find_packages(),
     include_package_data=True,
-    package_data = {'peroba': ['data/*','data/report/*']},
+    package_data = {'tauari': [f"{include_path}/*",f"{library_path}/*"]},
     data_files = [("", ["LICENSE"])],
     python_requires = '>={}'.format('.'.join(str(n) for n in min_version)),
     license='GPLv3+',
     install_requires=[
-           'biopython >= 1.68'
+        'python-dev',
+        'biopython >= 1.68'
        ],
     classifiers = [
         "Development Status :: 2 - Pre-Alpha",
@@ -79,11 +89,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.8",
     ],
     # Install a "tauari" program which calls tauari.__main__.main()
-    entry_points = {
-        "console_scripts": [
-            "tauari = tauari.tauari:main"
-        ]
-    },
+    #entry_points = { "console_scripts": ["tauari = tauari.tauari:main"]},
     cmdclass={
         'develop': PostDevelopCompile,
         'install': PostInstallCompile,

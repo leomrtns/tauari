@@ -1,0 +1,13 @@
+name: tauari 
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - pip
+  - biopython>1.68
+  - automake
+  - make
+  - pip:
+    - .  # this means run pip on this directory's setup.py 
+    - python-dev # C library

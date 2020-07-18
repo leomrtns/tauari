@@ -8,12 +8,20 @@ __Leonardo de Oliveira Martins<sup>1</sup>__
 
 Python bindings for biomcmc-lib 
 
+**tauari** is the name of an endangered Brazilian timber tree. 
+
 ## Installation
 
 Make sure you clone this repository recursively
 ```
 git clone --recursive  https://github.com/leomrtns/tauari.git
 ```
+### dependencies
+
+* development package with the API python/C library, which is installed with your python conda installation or as `python-dev` from linux. 
+In any case `setuptools` checks for it and installs from `pip` if missing. 
+* `autotools`, for installing the lowlevel `biomcmc-lib`. 
+
 
 ## License 
 SPDX-License-Identifier: GPL-3.0-or-later

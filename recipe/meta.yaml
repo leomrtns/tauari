@@ -2,11 +2,11 @@
 {% set revision="17ff24ffd7a279dd6dd62a0fdee13cd3d1abfc64" %}
 
 package:
-  name: super_distance 
+  name: tauari 
   version: {{ version }}
 
 source:
-  git_url: https://github.com/quadram-institute-bioscience/super_distance.git
+  git_url: https://github.com/quadram-institute-bioscience/tauari.git
   git_rev: {{ revision }}
   md5: unused
 
@@ -28,15 +28,15 @@ requirements:
 
 test:
   commands:
-    - super_distance -h 
+    - tauari -h 
 
 about:
-  home: https://github.com/quadram-institute-bioscience/super_distance
+  home: https://github.com/quadram-institute-bioscience/tauari
   license: 'GPLv3'
-  summary: 'Supertree method with distances'
+  summary: 'Python bindings for phylogenetic library biomcmc-lib'
 
 extra:
   identifiers:
-    - biotools:super_distance
+    - biotools:tauari
   skip-lints:
     - uses_git_url
