@@ -32,6 +32,7 @@ Since this software is under development, these two commands are quite useful:
 ```bash
 conda env update -f environment.yml # updat conda evironment after changing dependencies
 pip install -e . # installs in development mode (modifications to python files are live)
+python setup.py develop # same as above, but more verbose and overwriting ./build directory
 ```
 
 ### Dependencies
