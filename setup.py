@@ -33,6 +33,7 @@ module_c = setuptools.Extension('_tauari_c',
     runtime_library_dirs = ["build/lib"], 
     libraries = ['biomcmc'], # dynamic libraries only
     undef_macros = [ "NDEBUG" ],
+    extra_objects = ["build/lib/libbiomcmc.so", "build/lib/libbiomcmc.a"], # redundant with 'libraries' tbh
     #extra_compile_args = ["-Bstatic -lbiomcmc -Wl"],
     sources = source_files)
 
