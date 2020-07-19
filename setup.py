@@ -6,8 +6,7 @@ import subprocess
 from tauari import __version__
 
 ## right now it uses "local" copy of biomcmc but also needs system global-wide one (cant copy to sys.path)
-## (problem is setting include and lib). I can't make it use a customised name for biomcmc; 
-## Solution may be to make this the authorative installation of global shared biomcmc
+## I'll end up installing biomcmc with autotools and setup.py only when needed
 
 min_version = (3, 6)
 
