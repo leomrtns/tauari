@@ -17,9 +17,9 @@ tauari_testfunction (PyObject *self, PyObject *args)
   str2 = PyBytes_AsString(PyUnicode_AsUTF8String(arg2));
 
   biomcmc_random_number_init (0ULL);
-  printf ("I got [%s] and [%s] \n rng = %d", str1, str2, biomcmc_rng_get_algorithm()); // DEBUG
+  printf ("I got [%s] and [%s] \n rng = %d\n", str1, str2, biomcmc_rng_get_algorithm()); // DEBUG
   //if (error) { PyErr_SetString(TauariError, "gene and species trees can't be compared"); return NULL; }
-  biomcmc_rng_set_algorithm (9);
+  biomcmc_rng_set_algorithm (5);
   res_tuple = PyTuple_New(n_res);
   for (i = 0; i < n_res; i++) PyTuple_SetItem(res_tuple, i, PyLong_FromUnsignedLongLong ( biomcmc_rng_get() ));
 
@@ -29,8 +29,10 @@ tauari_testfunction (PyObject *self, PyObject *args)
 static PyObject *
 tauari_test2 (PyObject *self, PyObject *args)
 {
-  printf ("and now rng = %d", biomcmc_rng_get_algorithm()); // DEBUG
-  return ;
+  PyObject *res_int;
+  res_int = PyLong_FromUnsignedLong (biomcmc_rng_get_algorithm()); // DEBUG
+  printf ("and now rng = %d\n", biomcmc_rng_get_algorithm()); 
+  return res_int;
 }
 
 PyMODINIT_FUNC

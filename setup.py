@@ -33,6 +33,7 @@ module_c = setuptools.Extension('_tauari_c',
     runtime_library_dirs = ["build/lib"], 
     libraries = ['biomcmc'], # dynamic libraries only
     undef_macros = [ "NDEBUG" ],
+    #extra_compile_args = ["-Bstatic -lbiomcmc -Wl"],
     sources = source_files)
 
 if not os.path.exists(biomcmc_path): # developers can have their own links (without submodule)
