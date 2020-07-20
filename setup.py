@@ -19,7 +19,7 @@ Make sure you have an up-to-date pip installed.
 
 base_dir = pathlib.Path(__file__).parent.resolve()
 readme_file  = base_dir/"README.md"
-build_path   = f"{base_dir}/build"
+build_path   = f"{base_dir}/build_setup"
 biomcmc_path = f"{build_path}/biomcmc-lib"
 source_files = ["tauari_module.c"]
 source_files = [f"src/{x}" for x in source_files]
@@ -28,12 +28,12 @@ source_files = [f"src/{x}" for x in source_files]
 with readme_file.open(encoding = "utf-8") as f: long_description = f.read()
 
 module_c = setuptools.Extension('_tauari_c',
-    include_dirs = ["build/include/biomcmc"], 
-    library_dirs =  ["build/lib"],
-    runtime_library_dirs = ["build/lib"], 
+    include_dirs = ["build_setup/include/biomcmc"], 
+    library_dirs =  ["build_setup/lib"],
+    runtime_library_dirs = ["build_setup/lib"], 
     libraries = ['biomcmc'], # dynamic libraries only
     undef_macros = [ "NDEBUG" ],
-    extra_objects = ["build/lib/libbiomcmc.so", "build/lib/libbiomcmc.a"], # redundant with 'libraries' tbh
+    extra_objects = ["build_setup/lib/libbiomcmc.so", "build_setup/lib/libbiomcmc.a"], # redundant with 'libraries' tbh
     #extra_compile_args = ["-Bstatic -lbiomcmc -Wl"],
     sources = source_files)
 
@@ -79,8 +79,8 @@ setuptools.setup(
     },
     packages = setuptools.find_packages(),
     #include_package_data=True,
-    package_dir = {'tauari':"build/lib"}, ## copy to root (site-packages)
-    package_data = {'': ["libbiomcmc.so*"]}, # , "build/include/*", "build/include/biomcmc/*"]}, # relative paths to setup.py only 
+    package_dir = {'tauari':"build_setup/lib"}, ## copy to root (site-packages)
+    package_data = {'': ["libbiomcmc.so*"]}, # , "build_setup/include/*", "build_setup/include/biomcmc/*"]}, # relative paths to setup.py only 
     data_files = [("", ["LICENSE"])],
     python_requires = '>={}'.format('.'.join(str(n) for n in min_version)),
     license='GPLv3+',
