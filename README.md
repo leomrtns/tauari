@@ -10,8 +10,16 @@ It will contain python bindings for the low-level [biomcmc-lib](https://github.c
 phylogenetic library in C.
 Very beta at the moment. Empty, to be precise. 
 
-
 **tauari** is the name of an endangered Brazilian timber tree. Tree &#8594; towa-ree &#8594; tauari. 
+
+### Dependencies
+
+* python development package (with the API python/C library).  Installed with your python conda installation or as `python-dev` from linux. 
+* `automake`, the `check` unit test framework, and `zlib` are required for installing the lowlevel `biomcmc-lib`.
+* python > 3.6 and a C compiler, e.g. `gcc`
+* The lowlevel phylogenetic library [biomcmc-lib](https://github.com/quadram-institute-bioscience/biomcmc-lib), which should be included here
+(it will be compiled as well). 
+For a more up-to-date list you may need to check the conda/docker files once they are complete.
 
 # Installation
 
@@ -19,45 +27,37 @@ Make sure you clone this repository recursively:
 ```
 git clone --recursive  https://github.com/leomrtns/tauari.git
 ```
-Right now I am testing two ways of installing it, I'll probably use the second one (autotools).
-Needless to say the instructions are incomplete at this point. 
 
-### Dependencies
-
-* development package with the API python/C library, which is installed with your python conda installation or as `python-dev` from linux. 
-* `automake`, the `check` unit test framework, and `zlib` are required for installing the lowlevel `biomcmc-lib`.
-* python > 3.6 and a C compiler, e.g. `gcc`
-* The lowlevel phylogenetic library [biomcmc-lib](https://github.com/quadram-institute-bioscience/biomcmc-lib), which is installed together
-
-## installation using `pip` 
-
-You can create a conda environment 
+**tl;dr:** You can create a conda environment (or not) and then run `pip install .`  
 ```bash
 conda update -n base -c defaults conda # probably not needed, but some machines complained about it
 conda env create -f environment.yml
 conda activate tauari
 pip install .
 
-## since this software is under development, these two commands are also quite useful:
+## since this software is under development, I find these two commands quite useful:
 
 conda env update -f environment.yml # updat conda evironment after changing dependencies
 pip install -e . # installs in development mode (modifications to python files are live)
 python setup.py develop # same as above, but more verbose and overwriting ./build_setup directory
 ```
 
-However this method assumes that `biomcmc-lib` is installed globally, which is not its original or main purpose (to be
-an auxiliary, lowlevel library).
-I won't write the details here because I'll probably abandon this approach.
-
 ## autotools-based installation 
-This will probably be the default approach once this software becomes useful, since it compiles the lowlevel
-`biomcmc-lib` together with the C components of *tauari* and generates a dynamic library. 
-It still needs `setuptools` to install the python components. 
 
-`autotools` can find the shared library installation path relative to the environment root (e.g. `conda info --base` when installing
-locally or `/` if installing it system-wide).
-Or it can install a regular libotool library (the difference is `pyexec_LTLIBRARIES` or `lib_`)
-I plan to also generate a pre-install step in `setup.py` that runs autotools if library is absent. 
+Originally `biomcmc-lib` is an auxiliary, lowlevel library, and as such should not be directly exposed to the user or
+shared system-wide (you can do it, btw, but it's intended as a "subdir" for autotools).
+Therefore **tauari** compiles `biomcmc-lib` together with its C components, generating a dynamic library.
+Just like [setuptools.Extension](https://docs.python.org/3/extending/building.html), but using autotools.
+It still needs `setuptools` to install the python components and move the library to the correct location.  
+
+Calling `pip install .` (or `python setup.py install`) will run autotools in the background, but if you want you can run it by hand:
+```bash
+cd build_setup
+../configure --prefix="." 
+make && make install
+ls lib/
+```
+The file "tauari_c.so" can be imported in python.
 
 # License 
 SPDX-License-Identifier: GPL-3.0-or-later

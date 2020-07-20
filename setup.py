@@ -21,21 +21,9 @@ base_dir = pathlib.Path(__file__).parent.resolve()
 readme_file  = base_dir/"README.md"
 build_path   = f"{base_dir}/build_setup"
 biomcmc_path = f"{build_path}/biomcmc-lib"
-source_files = ["tauari_module.c"]
-source_files = [f"src/{x}" for x in source_files]
 
 # Eval the version file to get __version__; avoids importing our own package
 with readme_file.open(encoding = "utf-8") as f: long_description = f.read()
-
-module_c = setuptools.Extension('_tauari_c',
-    include_dirs = ["build_setup/include/biomcmc"], 
-    library_dirs =  ["build_setup/lib"],
-    runtime_library_dirs = ["build_setup/lib"], 
-    libraries = ['biomcmc'], # dynamic libraries only
-    undef_macros = [ "NDEBUG" ],
-    extra_objects = ["build_setup/lib/libbiomcmc.so", "build_setup/lib/libbiomcmc.a"], # redundant with 'libraries' tbh
-    #extra_compile_args = ["-Bstatic -lbiomcmc -Wl"],
-    sources = source_files)
 
 if not os.path.exists(biomcmc_path): # developers can have their own links (without submodule)
     source = f"{base_dir}/submodules/biomcmc-lib/"
@@ -44,10 +32,12 @@ if not os.path.exists(biomcmc_path): # developers can have their own links (with
     print (f"Tauari:: Creating a link '{biomcmc_path}' pointing to '{source}'")
     os.symlink(source, biomcmc_path)
 
-def biomc2_compilation (options = ""):
-    autoconf_path = f"{biomcmc_path}/configure"
-    subprocess.call(f"{autoconf_path} --prefix={build_path} {options}".split(), cwd=build_path) # --program-prefix=PREFIX 
-    subprocess.call(f"make install".split(), cwd=build_path) # libbiomcmc.a will be installed in {build_path}
+def biomc2_compilation (options = ""):     
+    if not os.path.isfile(f"{build_path}/lib/tauari_c.so"):
+        subprocess.call(f"../configure --prefix={build_path} {options}".split(), cwd=build_path) # --program-prefix=PREFIX 
+        subprocess.call(f"make".split(), cwd=build_path)
+        subprocess.call(f"make install".split(), cwd=build_path) # tauari_c.so* will be installed in {build_path}
+
 class PrePostDevelopCompile(setuptools.command.develop.develop):
     """pre- and post-compilation for development mode (only pre- currently)"""
     def run(self):
@@ -78,9 +68,8 @@ setuptools.setup(
         "Source": "https://github.com/quadram-institute-bioscience",
     },
     packages = setuptools.find_packages(),
-    #include_package_data=True,
-    package_dir = {'tauari':"build_setup/lib"}, ## copy to root (site-packages)
-    package_data = {'': ["libbiomcmc.so*"]}, # , "build_setup/include/*", "build_setup/include/biomcmc/*"]}, # relative paths to setup.py only 
+#    package_dir = {'tauari':"build_setup/lib"}, # copy to site-packages/tauari 
+    package_data = {'tauari': ["build_setup/lib/tauari_c.so*"]},      # relative paths to setup.py only 
     data_files = [("", ["LICENSE"])],
     python_requires = '>={}'.format('.'.join(str(n) for n in min_version)),
     license='GPLv3+',
@@ -97,11 +86,11 @@ setuptools.setup(
         "Programming Language :: Python :: 3.8",
     ],
     # Install a "tauari" program which calls tauari.__main__.main()
-    #entry_points = { "console_scripts": ["tauari = tauari.tauari:main"]},
+    # entry_points = { "console_scripts": ["tauari = tauari.tauari:main"]},
+    # ext_modules = [module_c], 
     cmdclass={
         'develop':  PrePostDevelopCompile,
         'install':  PrePostInstallCompile,
         'egg_info':  PrePostEggInfoCompile,
-    },
-    ext_modules = [module_c]
+    } 
 )

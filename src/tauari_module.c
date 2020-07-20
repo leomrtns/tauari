@@ -52,7 +52,7 @@ PyInit_tauari_c (void) /* it has to be named PyInit_<module name in python> */
   m = PyModule_Create(&tauarimodule);
   if (m == NULL) return NULL;
 
-  TauariError = PyErr_NewException("_tauari_c.error", NULL, NULL);
+  TauariError = PyErr_NewException("tauari_c.error", NULL, NULL);
   Py_INCREF(TauariError);
   PyModule_AddObject(m, "error", TauariError);
   return m;
