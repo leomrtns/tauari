@@ -596,6 +596,7 @@ PACKAGE_BUGREPORT='leomrtns@gmail.com'
 PACKAGE_URL='https://github.com/quadram-institute-bioscience/tauari'
 
 ac_unique_file="src/tauari_module.c"
+ac_default_prefix=`pwd`
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>
@@ -2313,7 +2314,7 @@ ac_configure="$SHELL $ac_aux_dir/configure"  # Please don't use this var.
 
 ac_config_headers="$ac_config_headers src/config.h"
 
-# AC_PREFIX_DEFAULT(`pwd`)
+
 
 CFLAGS=${CFLAGS-""}  # Override default O2
 CXXFLAGS=${CXXFLAGS-""}

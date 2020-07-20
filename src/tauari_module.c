@@ -36,7 +36,7 @@ tauari_test2 (PyObject *self, PyObject *args)
 }
 
 PyMODINIT_FUNC
-PyInit__tauari_c (void) /* it has to be named PyInit_<module name in python> */
+PyInit_tauari_c (void) /* it has to be named PyInit_<module name in python> */
 {
   PyObject *m;
   static PyMethodDef TauariMethods[] = {
@@ -52,7 +52,7 @@ PyInit__tauari_c (void) /* it has to be named PyInit_<module name in python> */
   m = PyModule_Create(&tauarimodule);
   if (m == NULL) return NULL;
 
-  TauariError = PyErr_NewException("__tauari_c.error", NULL, NULL);
+  TauariError = PyErr_NewException("_tauari_c.error", NULL, NULL);
   Py_INCREF(TauariError);
   PyModule_AddObject(m, "error", TauariError);
   return m;
@@ -64,7 +64,7 @@ main (int argc, char *argv[])
   wchar_t *program = Py_DecodeLocale(argv[0], NULL);
   if (program == NULL) { fprintf(stderr, "Fatal error: cannot decode argv[0]\n"); exit(1); }
   
-  PyImport_AppendInittab("_tauari_c", PyInit__tauari_c); /* Add a built-in module, before Py_Initialize */
+  PyImport_AppendInittab("tauari_c", PyInit_tauari_c); /* Add a built-in module, before Py_Initialize */
   Py_SetProgramName(program); /* Pass argv[0] to the Python interpreter */
   Py_Initialize(); /* Initialize the Python interpreter.  Required. */
  

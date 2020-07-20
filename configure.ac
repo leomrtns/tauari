@@ -3,7 +3,7 @@ AC_CONFIG_AUX_DIR([.])
 
 AC_CONFIG_SRCDIR([src/tauari_module.c])
 AC_CONFIG_HEADER([src/config.h])
-# AC_PREFIX_DEFAULT(`pwd`)
+AC_PREFIX_DEFAULT(`pwd`)
 dnl libtoolize recomendation
 AC_CONFIG_MACRO_DIR([m4])
 CFLAGS=${CFLAGS-""}  # Override default O2

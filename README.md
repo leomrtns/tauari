@@ -22,6 +22,13 @@ git clone --recursive  https://github.com/leomrtns/tauari.git
 Right now I am testing two ways of installing it, I'll probably use the second one (autotools).
 Needless to say the instructions are incomplete at this point. 
 
+### Dependencies
+
+* development package with the API python/C library, which is installed with your python conda installation or as `python-dev` from linux. 
+* `automake`, the `check` unit test framework, and `zlib` are required for installing the lowlevel `biomcmc-lib`.
+* python > 3.6 and a C compiler, e.g. `gcc`
+* The lowlevel phylogenetic library [biomcmc-lib](https://github.com/quadram-institute-bioscience/biomcmc-lib), which is installed together
+
 ## installation using `pip` 
 
 You can create a conda environment 
@@ -51,13 +58,6 @@ It still needs `setuptools` to install the python components.
 locally or `/` if installing it system-wide).
 Or it can install a regular libotool library (the difference is `pyexec_LTLIBRARIES` or `lib_`)
 I plan to also generate a pre-install step in `setup.py` that runs autotools if library is absent. 
-
-### Dependencies
-
-* development package with the API python/C library, which is installed with your python conda installation or as `python-dev` from linux. 
-* `automake`, the `check` unit test framework, and `zlib` are required for installing the lowlevel `biomcmc-lib`.
-* python > 3.6 and a C compiler, e.g. `gcc`
-* The lowlevel phylogenetic library [biomcmc-lib](https://github.com/quadram-institute-bioscience/biomcmc-lib), which is installed together
 
 # License 
 SPDX-License-Identifier: GPL-3.0-or-later
