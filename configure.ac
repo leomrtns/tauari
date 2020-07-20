@@ -1,4 +1,4 @@
-AC_INIT([tauari_c], [1.0.0], [leomrtns@gmail.com],[], [https://github.com/quadram-institute-bioscience/tauari])
+AC_INIT([tauari_c], [0.0.1], [leomrtns@gmail.com],[], [https://github.com/quadram-institute-bioscience/tauari])
 AC_CONFIG_AUX_DIR([.])
 
 AC_CONFIG_SRCDIR([src/tauari_module.c])
