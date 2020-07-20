@@ -42,7 +42,7 @@ pip install -e . # installs in development mode (modifications to python files a
 python setup.py develop # same as above, but more verbose and overwriting ./build_setup directory
 ```
 
-## autotools-based installation 
+## Details: autotools-based installation 
 
 Originally `biomcmc-lib` is an auxiliary, lowlevel library, and as such should not be directly exposed to the user or
 shared system-wide (you can do it, btw, but it's intended as a "subdir" for autotools).
