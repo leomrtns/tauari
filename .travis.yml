@@ -1,4 +1,12 @@
-language: c
+language: python
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"      # current default Python on Travis CI
+  - "3.7"
+  - "3.8"
+ 
 git:
   submodules: true
 #install: make get-deps  # 
@@ -9,10 +17,12 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install -y check 
   - sudo apt-get install -y autotools-dev 
+  - sudo apt-get install -y python-dev 
 install: 
   - autoreconf
 script:
-  - "mkdir build; cd build; ../configure && make && make check"
+  - pip install -r requirements.txt
+  - pip install .
 
 branches:
   only:

@@ -1,9 +1,8 @@
-import pathlib, setuptools, sys, os
+import pathlib, setuptools, sys, os, re
 import setuptools.command.develop
 import setuptools.command.install
 import setuptools.command.egg_info
 import subprocess
-from tauari import __version__
 
 ## right now it uses "local" copy of biomcmc but also needs system global-wide one (cant copy to sys.path)
 ## I'll end up installing biomcmc with autotools and setup.py only when needed
@@ -21,6 +20,10 @@ base_dir = pathlib.Path(__file__).parent.resolve()
 readme_file  = base_dir/"README.md"
 build_path   = f"{base_dir}/build_setup"
 biomcmc_path = f"{build_path}/biomcmc-lib"
+
+# first line of configure.ac is "AC_INIT([tauari_c], [0.0.1], [leomrtns@gmail.com]"
+version_txt = open(f"{base_dir}/configure.ac").readline()  
+version_txt = re.findall(r'\[(.*?)\]',version_txt)[1] 
 
 # Eval the version file to get __version__; avoids importing our own package
 with readme_file.open(encoding = "utf-8") as f: long_description = f.read()
@@ -56,7 +59,7 @@ class PrePostEggInfoCompile(setuptools.command.egg_info.egg_info):
 
 setuptools.setup(
     name = "tauari",
-    version = __version__,
+    version = version_txt,
     author = "Leonardo de Oliveira Martins",
     author_email = "Leonardo.de-Oliveira-Martins@quadram.ac.uk",
     description = "Python bindings for biomcmc-lib, a C library for phylogenetics",
@@ -74,7 +77,8 @@ setuptools.setup(
     python_requires = '>={}'.format('.'.join(str(n) for n in min_version)),
     license='GPLv3+',
     install_requires=[
-        'biopython >= 1.68'
+        'treeswift >= 1.0',
+        'biopython >= 1.70'
        ],
     classifiers = [
         "Development Status :: 2 - Pre-Alpha",

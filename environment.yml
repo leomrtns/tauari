@@ -5,8 +5,9 @@ channels:
   - defaults
 dependencies:
   - pip
+  - setuptools 
   - python>=3.6 # includes python-dev
-  - biopython>1.68
+  - treeswift>=1.0 
   - automake
   - make
   - zlib

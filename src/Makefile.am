@@ -1,6 +1,6 @@
-AM_CPPFLAGS = $(GTKDEPS_CFLAGS)  @OPENMP_CPPFLAGS@ -I$(srcdir)/../@BIOMCMCLIB@/lib
+AM_CPPFLAGS = $(GTKDEPS_CFLAGS)  @OPENMP_CPPFLAGS@ -I$(top_srcdir)/@BIOMCMCLIB@/lib
 AM_CFLAGS = @AM_CFLAGS@  @OPENMP_CFLAGS@ @PYTHON_CFLAGS@
-LIBBIOMC_LA = ../@BIOMCMCLIB@/lib/libbiomcmc_static.la
+LIBBIOMC_LA = $(top_builddir)/@BIOMCMCLIB@/lib/libbiomcmc_static.la
 LDADD = $(LIBBIOMC_LA) $(GTKDEPS_LIBS) $(AM_LDFLAGS) @PYTHON_LIBS@
 
 common_headers =#tauari_module.h 

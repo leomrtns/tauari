@@ -7,11 +7,11 @@ RUN apt-get update && apt-get install -y \
     giflib-dbg \
     check \
     build-essential \
+    python-dev \
     automake  && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-RUN git clone --recursive https://github.com/leomrtns/super_distance.git && \
-    mkdir build && \
-    cd build && \
-    ../super_distance/configure --prefix=/ && \
-    make && make install
+RUN git clone --recursive https://github.com/leomrtns/tauari.git && \
+    cd tauari && \
+    pip install -r requirements.txt && \ 
+    pip install . 
